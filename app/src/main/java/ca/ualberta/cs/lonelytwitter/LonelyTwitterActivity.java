@@ -26,6 +26,18 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+/**
+ * Created by dezfuli on 1/16/18.
+ */
+
+/**
+ * This is the main activity for the lonelyTwitter app. It runs the UI and saves and loads tweets.
+ * It displays the tweets on the screen and shows a save and clear button at the buttom for saving
+ * the tweets or deleting them.
+ * @author dezfuli
+ * @see Tweet
+ * @see Activity
+ */
 public class LonelyTwitterActivity extends Activity {
 
 	private static final String FILENAME = "tweet_list.sav";
@@ -34,7 +46,13 @@ public class LonelyTwitterActivity extends Activity {
 	private ArrayList<Tweet> tweetList;
 	private ArrayAdapter<Tweet> adapter;
 	
-	/** Called when the activity is first created. */
+	/**
+	 * Activity for when the lonelyTwitter app is started. It sets the layout and view for the main
+	 * activity. It also sets the onClickListener for the save button, this listener saves the tweet
+	 * typed when clicked.
+	 *
+	 * @param savedInstanceState the state if the app was still running in the background
+	 * */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,8 +62,6 @@ public class LonelyTwitterActivity extends Activity {
 		bodyText = (EditText) findViewById(R.id.body);
 		Button saveButton = (Button) findViewById(R.id.save);
 		oldTweetsList = (ListView) findViewById(R.id.oldTweetsList);
-
-
 
 		saveButton.setOnClickListener(new View.OnClickListener() {
 
@@ -61,6 +77,9 @@ public class LonelyTwitterActivity extends Activity {
 		});
 	}
 
+	/**
+	 * Sets the adapter and saved tweets to the view so they are displayed.
+	 */
 	@Override
 	protected void onStart() {
 
@@ -73,6 +92,12 @@ public class LonelyTwitterActivity extends Activity {
 
 	}
 
+	/**
+	 * Loads the old tweets from their saved text file. Uses the saved string under FILENAME for
+	 * the saved file's name. Uses GSON to save the files. This is called when loading in the app.
+	 * @throws RuntimeException
+	 *
+	 */
 	private void loadFromFile() {
 		try {
 			FileInputStream fis = openFileInput(FILENAME);
@@ -87,7 +112,12 @@ public class LonelyTwitterActivity extends Activity {
             throw new RuntimeException();
         }
 	}
-	
+
+	/**
+	 * Saves the tweets that are on the screen to a file using the
+	 * FILENAME string. Uses GSON to save the file.
+	 * @throws RuntimeException
+	 */
 	private void saveInFile() {
 		try {
 			FileOutputStream fos = openFileOutput(FILENAME,
@@ -104,11 +134,20 @@ public class LonelyTwitterActivity extends Activity {
 		}
 	}
 
+	/**
+	 * This clears the tweets that are on the screen,
+	 * this essentially empties the save file.
+	 * This is called when the user presses the clear button on the IO.
+	 * @param view the current view
+	 */
 	public void clear(View view){
         tweetList.clear();
         adapter.notifyDataSetChanged();
 	}
 
+	/**
+	 * Deconstructs the application.
+	 */
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
